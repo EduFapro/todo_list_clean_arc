@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final containerHeight = 800.0;
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.grey.shade200,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -95,13 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(50.0),
-          ),
-          height: containerHeight,
-          padding: const EdgeInsets.all(20),
+        final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+        return Padding(
+          padding: EdgeInsets.only(bottom: bottomInset),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -111,6 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    SizedBox(
+                      height: 20,),
                     Text(
                       "Adicionar Nova Tarefa",
                       style: TextStyle(
