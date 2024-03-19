@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'features/todo_list/data/models/task_model.dart';
+import 'features/todo_list/domain/usecases/delete_task.dart';
 import 'features/todo_list/presentation/controllers/todo_list_controller.dart';
 import 'features/todo_list/domain/usecases/add_task.dart';
 import 'features/todo_list/domain/usecases/get_tasks.dart';
@@ -23,11 +24,13 @@ Future<void> main() async {
   final getTasksUseCase = GetTasks(taskRepository);
   final addTaskUseCase = AddTask(taskRepository);
   final updateTaskUseCase = UpdateTask(taskRepository);
+  final deleteTaskUseCase = DeleteTask(taskRepository);
 
   final todoListController = TodoListController(
     getTodoList: getTasksUseCase,
     addTodo: addTaskUseCase,
     updateTodo: updateTaskUseCase,
+    deleteTodo: deleteTaskUseCase
   );
 
   runApp(MyApp(todoListController: todoListController));
@@ -42,13 +45,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Clean Arch Todo List',
+      title: 'Clean Arc Todo List',
       theme: ThemeData(
         useMaterial3: false,
       ),
       home: toDoListPage(
-        title: 'Clean Arch Todo List',
-        controller: todoListController, // Pass the controller to MyHomePage
+        title: 'Clean Arc Todo List',
+        controller: todoListController,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/task.dart';
 import '../controllers/todo_list_controller.dart';
 
 class toDoListPage extends StatefulWidget {
@@ -13,13 +14,18 @@ class toDoListPage extends StatefulWidget {
 }
 
 class _toDoListPageState extends State<toDoListPage> {
-  int _counter = 0;
-  final List<int> _items = [];
+  // int _counter = 0;
+  // final List<int> _items = [];
 
-  void _incrementCounter() {
-    setState(() {
-      _items.add(_items.length + 1);
-    });
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _items.add(_items.length + 1);
+  //   });
+  // }
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.loadTasks();
   }
 
   @override
@@ -28,31 +34,41 @@ class _toDoListPageState extends State<toDoListPage> {
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         title: Text(
-          "Clean Arch Todo List",
+          "Clean Arc Todo List",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
-            color: Colors.black, // Or any color you wish
+            color: Colors.black54,
           ),
         ),
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: _items.length,
-          itemBuilder: (context, index) {
-            return Card(
-              margin: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('Item ${_items[index]}'),
-                subtitle: Text('This is item number ${_items[index]}'),
-              ),
-            );
-          },
-        ),
+      body: ValueListenableBuilder<List<Task>>(
+        valueListenable: widget.controller.tasksNotifier,
+        builder: (context, tasks, child) {
+          return ListView.builder(
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              final task = tasks[index];
+              return Card(
+                margin: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text(task.title),
+                  subtitle: Text('Completed: ${task.isCompleted ? "Yes" : "No"}'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      widget.controller.deleteTask(task);
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showModalBottomSheet,
-        tooltip: 'Increment',
+        tooltip: 'Add Task',
         child: const Icon(Icons.add),
       ),
     );
