@@ -4,7 +4,13 @@ import '../../domain/entities/task.dart';
 
 class TaskLocalDataSource {
   static const String tasksBoxName = "tasks";
+  static final TaskLocalDataSource _singleton = TaskLocalDataSource._internal();
 
+  // Private constructor
+  TaskLocalDataSource._internal();
+
+  // Factory constructor to return the same instance
+  factory TaskLocalDataSource() => _singleton;
   Future<Box<Task>> openTasksBox() async {
     return await Hive.openBox<Task>(tasksBoxName);
   }

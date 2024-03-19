@@ -3,9 +3,14 @@ import '../../domain/repositories/task_repository.dart';
 import '../datasources/task_local_data_source.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
+
   final TaskLocalDataSource localDataSource;
 
-  TaskRepositoryImpl(this.localDataSource);
+  static final TaskRepositoryImpl _singleton = TaskRepositoryImpl._internal(TaskLocalDataSource());
+
+  TaskRepositoryImpl._internal(this.localDataSource);
+
+  factory TaskRepositoryImpl() => _singleton;
 
   @override
   Future<List<Task>> getTasks() async {

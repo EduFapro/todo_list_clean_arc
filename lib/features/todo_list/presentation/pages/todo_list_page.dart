@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+import '../controllers/todo_list_controller.dart';
+
+class toDoListPage extends StatefulWidget {
 
   final String title;
+  final TodoListController controller;
 
+  const toDoListPage({super.key, required this.title, required this.controller, });
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<toDoListPage> createState() => _toDoListPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _toDoListPageState extends State<toDoListPage> {
   int _counter = 0;
   final List<int> _items = [];
 
@@ -58,6 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showModalBottomSheet() {
     final _formKey = GlobalKey<FormState>();
     final containerHeight = 800.0;
+    String taskTitle = '';
+    bool isCompleted = false;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -95,20 +101,27 @@ class _MyHomePageState extends State<MyHomePage> {
                           horizontal: 8.0, vertical: 16.0),
                       child: TextFormField(
                         decoration: bottomSheetInputDecoration("Título"),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, insira um título';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) => taskTitle = value ?? '',
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 8.0),
-                      child: SizedBox(
-                        height: containerHeight / 4,
-                        child: TextFormField(
-                          decoration: bottomSheetInputDecoration("Descrição"),
-                          maxLines: 10,
-                          minLines: 6,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       horizontal: 8.0, vertical: 8.0),
+                    //   child: SizedBox(
+                    //     height: containerHeight / 4,
+                    //     child: TextFormField(
+                    //       decoration: bottomSheetInputDecoration("Descrição"),
+                    //       maxLines: 10,
+                    //       minLines: 6,
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Row(
@@ -129,9 +142,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: const Text('Salvar'),
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  widget.controller.createAndAddTask(taskTitle, isCompleted: isCompleted);
                                   Navigator.pop(context);
                                 }
                               },
+
                             ),
                           ),
                         ],
@@ -146,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
+
 
   InputDecoration bottomSheetInputDecoration(String labelText) {
     return InputDecoration(

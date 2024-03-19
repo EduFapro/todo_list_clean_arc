@@ -31,4 +31,11 @@ class TodoListController {
     await updateTodo(task);
     loadTasks();
   }
+
+  Future<void> createAndAddTask(String title, {bool isCompleted = false}) async {
+    final newTask = Task(id: UniqueKey().toString(), title: title, isCompleted: isCompleted);
+    await addTask(newTask);
+    await loadTasks();
+  }
+
 }
