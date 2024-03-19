@@ -1,5 +1,5 @@
-import '../entities/task.dart';
-import '../repositories/task_repository.dart';
+import '../../domain/entities/task.dart';
+import '../../domain/repositories/task_repository.dart';
 
 class GetTasks {
   final TaskRepository repository;
@@ -10,4 +10,3 @@ class GetTasks {
     return await repository.getTasks();
   }
 }
-

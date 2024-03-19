@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
+import 'features/todo_list/data/models/task_model.dart';
 import 'features/todo_list/presentation/controllers/todo_list_controller.dart';
 import 'features/todo_list/domain/usecases/add_task.dart';
 import 'features/todo_list/domain/usecases/get_tasks.dart';
@@ -9,10 +10,12 @@ import 'features/todo_list/data/repositories/task_repository_impl.dart';
 import 'features/todo_list/presentation/pages/todo_list_page.dart';
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-  await Hive.openBox('tasks');
+  Hive.registerAdapter(TaskModelAdapter());
+  // await Hive.openBox('tasks');
 
   // Use the singleton instance of TaskRepositoryImpl
   final taskRepository = TaskRepositoryImpl();

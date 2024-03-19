@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
-import '../../domain/entities/task.dart';
+import '../models/task_model.dart';
+
 
 class TaskLocalDataSource {
   static const String tasksBoxName = "tasks";
@@ -11,21 +12,21 @@ class TaskLocalDataSource {
 
   // Factory constructor to return the same instance
   factory TaskLocalDataSource() => _singleton;
-  Future<Box<Task>> openTasksBox() async {
-    return await Hive.openBox<Task>(tasksBoxName);
+  Future<Box<TaskModel>> openTasksBox() async {
+    return await Hive.openBox<TaskModel>(tasksBoxName);
   }
 
-  Future<List<Task>> getTasks() async {
+  Future<List<TaskModel>> getTasks() async {
     final box = await openTasksBox();
     return box.values.toList();
   }
 
-  Future<void> addTask(Task task) async {
+  Future<void> addTask(TaskModel task) async {
     final box = await openTasksBox();
     await box.put(task.id, task);
   }
 
-  Future<void> updateTask(Task task) async {
+  Future<void> updateTask(TaskModel task) async {
     final box = await openTasksBox();
     await box.put(task.id, task);
   }
