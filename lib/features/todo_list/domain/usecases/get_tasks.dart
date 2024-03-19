@@ -10,3 +10,4 @@ class GetTasks {
     return await repository.getTasks();
   }
 }
+
