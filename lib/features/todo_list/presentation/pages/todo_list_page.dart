@@ -26,7 +26,9 @@ class _toDoListPageState extends State<toDoListPage> {
     final errorMessage = widget.controller.errorNotifier.value;
     if (errorMessage != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(errorMessage))
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(errorMessage),)
       );
     }
   }

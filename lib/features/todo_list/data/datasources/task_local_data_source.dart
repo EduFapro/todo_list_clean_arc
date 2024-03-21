@@ -28,8 +28,6 @@ class TaskLocalDataSource {
   Future<List<TaskModel>> getTasks() async {
     try {
       final box = await openTasksBox();
-      print(box);
-      print("aff");
       return box.values.toList();
     } on Exception catch (e) {
       print("Failed to fetch tasks $e");
