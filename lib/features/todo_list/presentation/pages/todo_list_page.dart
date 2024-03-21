@@ -14,18 +14,28 @@ class toDoListPage extends StatefulWidget {
 }
 
 class _toDoListPageState extends State<toDoListPage> {
-  // int _counter = 0;
-  // final List<int> _items = [];
 
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _items.add(_items.length + 1);
-  //   });
-  // }
   @override
   void initState() {
     super.initState();
     widget.controller.loadTasks();
+    widget.controller.errorNotifier.addListener(_showError);
+  }
+
+  void _showError() {
+    final errorMessage = widget.controller.errorNotifier.value;
+    if (errorMessage != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage))
+      );
+    }
+  }
+
+
+  @override
+  void dispose() {
+    widget.controller.errorNotifier.removeListener(_showError);
+    super.dispose();
   }
 
   @override

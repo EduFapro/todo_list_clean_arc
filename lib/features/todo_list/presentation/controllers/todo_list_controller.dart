@@ -12,6 +12,7 @@ class TodoListController {
   final DeleteTask deleteTodo;
 
   ValueNotifier<List<Task>> tasksNotifier = ValueNotifier([]);
+  ValueNotifier<String?> errorNotifier = ValueNotifier(null);
 
   TodoListController({
     required this.getTodoList,
@@ -21,23 +22,45 @@ class TodoListController {
   });
 
   Future<void> loadTasks() async {
-    final tasksList = await getTodoList();
-    tasksNotifier.value = tasksList;
+    try {
+      final tasksList = await getTodoList();
+      tasksNotifier.value = tasksList;
+      errorNotifier.value = null;
+
+    } catch (e) {
+      print(e);
+      errorNotifier.value = "Não foi possível carregar as Tasks.";
+    }
   }
 
   Future<void> addTask(Task task) async {
-    await addTodo(task);
-    loadTasks();
+    try {
+      await addTodo(task);
+      loadTasks();
+    } on Exception catch (e) {
+      print(e);
+      errorNotifier.value = "Não foi possível adicionar a Task.";
+    }
   }
 
   Future<void> updateTask(Task task) async {
-    await updateTodo(task);
-    loadTasks();
+    try {
+      await updateTodo(task);
+      loadTasks();
+    } on Exception catch (e) {
+      print(e);
+      errorNotifier.value = "Não foi possível adicionar atualizar Task.";
+    }
   }
 
   Future<void> deleteTask(Task task) async {
-    await deleteTodo(task.id.toString());
-    loadTasks();
+    try {
+      await deleteTodo(task.id.toString());
+      loadTasks();
+    } on Exception catch (e) {
+      print(e);
+      errorNotifier.value = "Não foi possível deletar a Task.";
+    }
   }
 
   Future<void> createAndAddTask(String title, {bool isCompleted = false}) async {

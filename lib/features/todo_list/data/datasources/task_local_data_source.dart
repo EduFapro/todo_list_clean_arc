@@ -12,27 +12,59 @@ class TaskLocalDataSource {
 
   // Factory constructor to return the same instance
   factory TaskLocalDataSource() => _singleton;
+
   Future<Box<TaskModel>> openTasksBox() async {
-    return await Hive.openBox<TaskModel>(tasksBoxName);
+    try {
+      throw Exception("Failed to open tasks box.");
+      return await Hive.openBox<TaskModel>(tasksBoxName);
+    } catch (e) {
+      print("Failed to open tasks box: $e");
+      throw Exception("Failed to open tasks box.");
+    }
   }
 
+
+
   Future<List<TaskModel>> getTasks() async {
-    final box = await openTasksBox();
-    return box.values.toList();
+    try {
+      final box = await openTasksBox();
+      print(box);
+      print("aff");
+      return box.values.toList();
+    } on Exception catch (e) {
+      print("Failed to fetch tasks $e");
+      rethrow;
+    }
   }
 
   Future<void> addTask(TaskModel task) async {
-    final box = await openTasksBox();
-    await box.put(task.id, task);
+    try {
+      final box = await openTasksBox();
+      await box.put(task.id, task);
+    } catch (e) {
+      print("Failed to add task: $e");
+      rethrow;
+    }
   }
 
+
   Future<void> updateTask(TaskModel task) async {
-    final box = await openTasksBox();
-    await box.put(task.id, task);
+    try {
+      final box = await openTasksBox();
+      await box.put(task.id, task);
+    } on Exception catch (e) {
+      print("Failed to update task: $e");
+      rethrow;
+    }
   }
 
   Future<void> deleteTask(String id) async {
-    final box = await openTasksBox();
-    await box.delete(id);
+    try {
+      final box = await openTasksBox();
+      await box.delete(id);
+    } on Exception catch (e) {
+      print("Failed to delete task: $e");
+      rethrow;
+    }
   }
 }

@@ -14,36 +14,60 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<List<Task>> getTasks() async {
-    final taskModels = await localDataSource.getTasks();
-    return taskModels.map((model) => Task(
-      id: model.id,
-      title: model.title,
-      isCompleted: model.isCompleted,
-    )).toList();
+    try {
+      final taskModels = await localDataSource.getTasks();
+      return taskModels.map((model) => Task(
+        id: model.id,
+        title: model.title,
+        isCompleted: model.isCompleted,
+      )).toList();
+    } catch (e) {
+      print("Error fetching tasks: $e");
+      // Optionally rethrow or handle the exception
+      throw Exception("Error fetching tasks from local data source");
+    }
   }
 
   @override
   Future<void> addTask(Task task) async {
-    final taskModel = TaskModel(
-      id: task.id,
-      title: task.title,
-      isCompleted: task.isCompleted,
-    );
-    await localDataSource.addTask(taskModel);
+    try {
+      final taskModel = TaskModel(
+        id: task.id,
+        title: task.title,
+        isCompleted: task.isCompleted,
+      );
+      await localDataSource.addTask(taskModel);
+    } catch (e) {
+      print("Error adding task: $e");
+      // Optionally rethrow or handle the exception
+      throw Exception("Error adding task to local data source");
+    }
   }
 
   @override
   Future<void> updateTask(Task task) async {
-    final taskModel = TaskModel(
-      id: task.id,
-      title: task.title,
-      isCompleted: task.isCompleted,
-    );
-    await localDataSource.updateTask(taskModel);
+    try {
+      final taskModel = TaskModel(
+        id: task.id,
+        title: task.title,
+        isCompleted: task.isCompleted,
+      );
+      await localDataSource.updateTask(taskModel);
+    } catch (e) {
+      print("Error updating task: $e");
+      // Optionally rethrow or handle the exception
+      throw Exception("Error updating task in local data source");
+    }
   }
 
   @override
   Future<void> deleteTask(String id) async {
-    await localDataSource.deleteTask(id);
+    try {
+      await localDataSource.deleteTask(id);
+    } catch (e) {
+      print("Error deleting task: $e");
+      // Optionally rethrow or handle the exception
+      throw Exception("Error deleting task from local data source");
+    }
   }
 }
