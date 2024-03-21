@@ -15,7 +15,7 @@ class TaskLocalDataSource {
 
   Future<Box<TaskModel>> openTasksBox() async {
     try {
-      throw Exception("Failed to open tasks box.");
+      // throw Exception("Failed to open tasks box.");
       return await Hive.openBox<TaskModel>(tasksBoxName);
     } catch (e) {
       print("Failed to open tasks box: $e");
