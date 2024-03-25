@@ -49,7 +49,7 @@ class TodoListController {
       loadTasks();
     } on Exception catch (e) {
       print(e);
-      errorNotifier.value = "Não foi possível adicionar atualizar Task.";
+      errorNotifier.value = "Não foi possível atualizar atualizar Task.";
     }
   }
 

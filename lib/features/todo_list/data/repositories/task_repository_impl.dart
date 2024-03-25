@@ -22,8 +22,7 @@ class TaskRepositoryImpl implements TaskRepository {
         isCompleted: model.isCompleted,
       )).toList();
     } catch (e) {
-      print("Error fetching tasks: $e");
-      // Optionally rethrow or handle the exception
+      print("Não foi possível carregar as tarefas $e");
       throw Exception("Error fetching tasks from local data source");
     }
   }
@@ -38,8 +37,7 @@ class TaskRepositoryImpl implements TaskRepository {
       );
       await localDataSource.addTask(taskModel);
     } catch (e) {
-      print("Error adding task: $e");
-      // Optionally rethrow or handle the exception
+      print("Não foi possível criar tarefa: $e");
       throw Exception("Error adding task to local data source");
     }
   }
@@ -54,8 +52,7 @@ class TaskRepositoryImpl implements TaskRepository {
       );
       await localDataSource.updateTask(taskModel);
     } catch (e) {
-      print("Error updating task: $e");
-      // Optionally rethrow or handle the exception
+      print("Erro ao atualizar a tarefa: $e");
       throw Exception("Error updating task in local data source");
     }
   }
@@ -65,8 +62,7 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       await localDataSource.deleteTask(id);
     } catch (e) {
-      print("Error deleting task: $e");
-      // Optionally rethrow or handle the exception
+      print("Erro ao deletar a tarefa: $e");
       throw Exception("Error deleting task from local data source");
     }
   }
