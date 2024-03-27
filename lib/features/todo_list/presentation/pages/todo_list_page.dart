@@ -4,17 +4,20 @@ import '../../domain/entities/task.dart';
 import '../controllers/todo_list_controller.dart';
 
 class toDoListPage extends StatefulWidget {
-
   final String title;
   final TodoListController controller;
 
-  const toDoListPage({super.key, required this.title, required this.controller, });
+  const toDoListPage({
+    super.key,
+    required this.title,
+    required this.controller,
+  });
+
   @override
   State<toDoListPage> createState() => _toDoListPageState();
 }
 
 class _toDoListPageState extends State<toDoListPage> {
-
   @override
   void initState() {
     super.initState();
@@ -25,14 +28,12 @@ class _toDoListPageState extends State<toDoListPage> {
   void _showError() {
     final errorMessage = widget.controller.errorNotifier.value;
     if (errorMessage != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(errorMessage),)
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(errorMessage),
+      ));
     }
   }
-
 
   @override
   void dispose() {
@@ -65,12 +66,25 @@ class _toDoListPageState extends State<toDoListPage> {
                 margin: const EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(task.title),
-                  subtitle: Text('Completed: ${task.isCompleted ? "Yes" : "No"}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      widget.controller.deleteTask(task);
-                    },
+                  subtitle:
+                      Text('Completed: ${task.isCompleted ? "Yes" : "No"}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          widget.controller.deleteTask(task);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(task.isCompleted ? Icons.undo : Icons.done,
+                            color: Colors.green),
+                        onPressed: () {
+                          widget.controller.toggleTaskCompletion(task);
+                        },
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -171,11 +185,11 @@ class _toDoListPageState extends State<toDoListPage> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  widget.controller.createAndAddTask(taskTitle, isCompleted: isCompleted);
+                                  widget.controller.createAndAddTask(taskTitle,
+                                      isCompleted: isCompleted);
                                   Navigator.pop(context);
                                 }
                               },
-
                             ),
                           ),
                         ],
@@ -190,7 +204,6 @@ class _toDoListPageState extends State<toDoListPage> {
       },
     );
   }
-
 
   InputDecoration bottomSheetInputDecoration(String labelText) {
     return InputDecoration(

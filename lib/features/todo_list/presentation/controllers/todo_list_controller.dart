@@ -69,4 +69,14 @@ class TodoListController {
     await loadTasks();
   }
 
+  Future<void> toggleTaskCompletion(Task task) async {
+    final updatedTask = Task(
+      id: task.id,
+      title: task.title,
+      isCompleted: !task.isCompleted,
+    );
+
+    await updateTask(updatedTask);
+  }
+
 }
